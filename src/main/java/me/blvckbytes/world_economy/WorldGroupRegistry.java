@@ -63,7 +63,8 @@ public class WorldGroupRegistry {
         groupDataSection.members
           .stream()
           .map(String::toLowerCase)
-          .collect(Collectors.toSet())
+          .collect(Collectors.toSet()),
+        groupDataSection.startingBalance
       );
 
       worldGroupByIdentifierNameLower.put(identifierNameLower, worldGroup);

@@ -84,7 +84,7 @@ public class EconomyDataRegistry implements BalanceConstraint {
 
   public EconomyAccountRegistry getAccountRegistry(WorldGroup worldGroup) {
     return accountRegistryByWorldGroup.computeIfAbsent(worldGroup, key ->
-      new EconomyAccountRegistry(worldGroup, config, this)
+      new EconomyAccountRegistry(worldGroup, this)
     );
   }
 

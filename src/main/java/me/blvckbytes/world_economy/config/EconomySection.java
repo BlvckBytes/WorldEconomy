@@ -13,7 +13,6 @@ public class EconomySection extends AConfigSection {
 
   public String nameSingular;
   public String namePlural;
-  public double startingBalance;
   public Double maxMoney;
   public Double minMoney;
   public @Nullable Double transactionStepSize;
@@ -41,9 +40,6 @@ public class EconomySection extends AConfigSection {
   @Override
   public void afterParsing(List<Field> fields) throws Exception {
     super.afterParsing(fields);
-
-    if (startingBalance < 0)
-      throw new MappingError("Starting-balance cannot be less than zero");
 
     if (minMoney != null && maxMoney != null && minMoney > maxMoney)
       throw new MappingError("The minimum amount of money cannot be larger than the maximum amount of money");

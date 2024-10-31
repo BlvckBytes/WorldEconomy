@@ -1,7 +1,5 @@
 package me.blvckbytes.world_economy;
 
-import me.blvckbytes.bukkitevaluable.ConfigKeeper;
-import me.blvckbytes.world_economy.config.MainSection;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;
 
@@ -15,12 +13,10 @@ public class EconomyAccountRegistry {
   private final Map<UUID, Integer> topListIndexById;
   private final List<EconomyAccount> topList;
 
-  private final ConfigKeeper<MainSection> config;
   private final BalanceConstraint balanceConstraint;
 
   public EconomyAccountRegistry(
     WorldGroup worldGroup,
-    ConfigKeeper<MainSection> config,
     BalanceConstraint balanceConstraint
   ) {
     this.worldGroup = worldGroup;
@@ -29,7 +25,6 @@ public class EconomyAccountRegistry {
     this.topListIndexById = new HashMap<>();
     this.topList = new ArrayList<>();
 
-    this.config = config;
     this.balanceConstraint = balanceConstraint;
   }
 
@@ -70,7 +65,7 @@ public class EconomyAccountRegistry {
     if (!holder.hasPlayedBefore())
       return null;
 
-    account = new EconomyAccount(holder, worldGroup, config.rootSection.economy.startingBalance, balanceConstraint);
+    account = new EconomyAccount(holder, worldGroup, worldGroup.startingBalance(), balanceConstraint);
     registerAccount(holder, account);
     return account;
   }

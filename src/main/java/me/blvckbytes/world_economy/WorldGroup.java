@@ -9,7 +9,8 @@ import java.util.Set;
 public record WorldGroup(
   String identifierNameLower,
   BukkitEvaluable displayName,
-  Set<String> memberWorldNamesLower
+  Set<String> memberWorldNamesLower,
+  double startingBalance
 ) {
   public boolean contains(World world) {
     return memberWorldNamesLower.contains(world.getName().toLowerCase());

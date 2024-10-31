@@ -48,6 +48,8 @@ worldGroups:
   World:
     # Rendered in chat, whenever this world-group is referred to
     displayName: '&6World'
+    # Balance set to an account whenever it's first created
+    startingBalance: 200.0
     # List of world-names which are combined into a single economy-account per player
     members:
       - world
@@ -65,8 +67,6 @@ economy:
   topListSize: 5
   nameSingular: 'Euro'
   namePlural: 'Euros'
-  # Balance set to an account whenever it's first created
-  startingBalance: 200.0
   # Set to null for no upper bound
   maxMoney: null
   # Set to null for no lower bound
@@ -76,7 +76,6 @@ economy:
   # Set to null for no constraint
   # Values transferred using /pay or /money need to be a multiple of this value
   transactionStepSize: .01
-
   # Set to null to not render
   currencyFormatPrefix: '€ '
   # Set to null to not render
