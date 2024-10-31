@@ -1,9 +1,13 @@
 package me.blvckbytes.world_economy.config;
 
+import me.blvckbytes.bbconfigmapper.ScalarType;
 import me.blvckbytes.bbconfigmapper.sections.AConfigSection;
 import me.blvckbytes.bukkitevaluable.BukkitEvaluable;
 import me.blvckbytes.gpeee.interpreter.EvaluationEnvironmentBuilder;
 import org.jetbrains.annotations.Nullable;
+
+import java.lang.reflect.Field;
+import java.util.List;
 
 public class PlayerMessagesSection extends AConfigSection {
 
@@ -63,6 +67,7 @@ public class PlayerMessagesSection extends AConfigSection {
   public @Nullable BukkitEvaluable usageMoneyCommand;
   public @Nullable BukkitEvaluable playerOnlyMoneyCommandNoWorldGroup;
   public @Nullable BukkitEvaluable moneyCommandConsoleName;
+  public @Nullable String evaluatedMoneyCommandConsoleName;
   public @Nullable BukkitEvaluable moneyAddExceedsReceiversBalance;
   public @Nullable BukkitEvaluable moneyRemoveExceedsReceiversBalance;
   public @Nullable BukkitEvaluable moneySetExceedsReceiversBalance;
@@ -86,5 +91,13 @@ public class PlayerMessagesSection extends AConfigSection {
 
   public PlayerMessagesSection(EvaluationEnvironmentBuilder baseEnvironment) {
     super(baseEnvironment);
+  }
+
+  @Override
+  public void afterParsing(List<Field> fields) throws Exception {
+    super.afterParsing(fields);
+
+    if (moneyCommandConsoleName != null)
+      evaluatedMoneyCommandConsoleName = moneyCommandConsoleName.asScalar(ScalarType.STRING, builtBaseEnvironment);
   }
 }

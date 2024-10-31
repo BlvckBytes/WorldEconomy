@@ -1,6 +1,5 @@
 package me.blvckbytes.world_economy.commands;
 
-import me.blvckbytes.bbconfigmapper.ScalarType;
 import me.blvckbytes.bukkitevaluable.BukkitEvaluable;
 import me.blvckbytes.bukkitevaluable.ConfigKeeper;
 import me.blvckbytes.world_economy.*;
@@ -182,7 +181,7 @@ public class BalanceCommand extends EconomyCommandBase implements CommandExecuto
         config.rootSection.getBaseEnvironment()
           .withStaticVariable("holder", targetPlayer.getName())
           .withStaticVariable("balance", economyProvider.format(targetAccount.getBalance()))
-          .withStaticVariable("world_group", targetWorldGroup.displayName().asScalar(ScalarType.STRING, config.rootSection.builtBaseEnvironment))
+          .withStaticVariable("world_group", targetWorldGroup.evaluatedDisplayName())
           .build()
       );
     }

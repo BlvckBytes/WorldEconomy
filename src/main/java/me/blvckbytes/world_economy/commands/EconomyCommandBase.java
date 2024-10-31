@@ -1,6 +1,5 @@
 package me.blvckbytes.world_economy.commands;
 
-import me.blvckbytes.bbconfigmapper.ScalarType;
 import me.blvckbytes.bukkitevaluable.BukkitEvaluable;
 import me.blvckbytes.bukkitevaluable.ConfigKeeper;
 import me.blvckbytes.world_economy.OfflinePlayerHelper;
@@ -122,15 +121,11 @@ public abstract class EconomyCommandBase {
       message = config.rootSection.playerMessages.couldNotLoadAccountOther;
 
     if (message != null) {
-      var groupName = worldGroup.displayName().asScalar(
-        ScalarType.STRING, config.rootSection.builtBaseEnvironment
-      );
-
       message.sendMessage(
         sender,
         config.rootSection.getBaseEnvironment()
           .withStaticVariable("name", targetPlayer.getName())
-          .withStaticVariable("world_group", groupName)
+          .withStaticVariable("world_group", worldGroup.evaluatedDisplayName())
           .build()
       );
     }

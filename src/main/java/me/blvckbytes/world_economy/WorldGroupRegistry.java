@@ -1,5 +1,6 @@
 package me.blvckbytes.world_economy;
 
+import me.blvckbytes.bbconfigmapper.ScalarType;
 import me.blvckbytes.bukkitevaluable.ConfigKeeper;
 import me.blvckbytes.world_economy.config.MainSection;
 import org.apache.commons.lang.StringUtils;
@@ -59,7 +60,7 @@ public class WorldGroupRegistry {
 
       var worldGroup = new WorldGroup(
         identifierNameLower,
-        groupDataSection.displayName,
+        groupDataSection.displayName.asScalar(ScalarType.STRING, groupDataSection.builtBaseEnvironment),
         groupDataSection.members
           .stream()
           .map(String::toLowerCase)

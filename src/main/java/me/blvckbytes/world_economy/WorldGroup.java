@@ -1,6 +1,5 @@
 package me.blvckbytes.world_economy;
 
-import me.blvckbytes.bukkitevaluable.BukkitEvaluable;
 import org.bukkit.World;
 
 import java.util.Objects;
@@ -8,7 +7,7 @@ import java.util.Set;
 
 public record WorldGroup(
   String identifierNameLower,
-  BukkitEvaluable displayName,
+  String evaluatedDisplayName,
   Set<String> memberWorldNamesLower,
   double startingBalance
 ) {

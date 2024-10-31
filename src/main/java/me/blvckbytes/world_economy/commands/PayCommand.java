@@ -1,6 +1,5 @@
 package me.blvckbytes.world_economy.commands;
 
-import me.blvckbytes.bbconfigmapper.ScalarType;
 import me.blvckbytes.bukkitevaluable.BukkitEvaluable;
 import me.blvckbytes.bukkitevaluable.ConfigKeeper;
 import me.blvckbytes.world_economy.*;
@@ -197,7 +196,7 @@ public class PayCommand extends EconomyCommandBase implements CommandExecutor, T
           config.rootSection.getBaseEnvironment()
             .withStaticVariable("balance", economyProvider.format(sourceAccount.getBalance()))
             .withStaticVariable("amount", economyProvider.format(amount))
-            .withStaticVariable("world_group", sourceWorldGroup.displayName().asScalar(ScalarType.STRING, config.rootSection.builtBaseEnvironment))
+            .withStaticVariable("world_group", sourceWorldGroup.evaluatedDisplayName())
             .build()
         );
       }
@@ -219,7 +218,7 @@ public class PayCommand extends EconomyCommandBase implements CommandExecutor, T
           config.rootSection.getBaseEnvironment()
             .withStaticVariable("balance", economyProvider.format(targetAccount.getBalance()))
             .withStaticVariable("amount", economyProvider.format(amount))
-            .withStaticVariable("world_group", targetWorldGroup.displayName().asScalar(ScalarType.STRING, config.rootSection.builtBaseEnvironment))
+            .withStaticVariable("world_group", targetWorldGroup.evaluatedDisplayName())
             .withStaticVariable("name", targetPlayer.getName())
             .build()
         );
@@ -236,8 +235,8 @@ public class PayCommand extends EconomyCommandBase implements CommandExecutor, T
       .withStaticVariable("source_new_balance", economyProvider.format(sourceAccount.getBalance()))
       .withStaticVariable("target_new_balance", economyProvider.format(targetAccount.getBalance()))
       .withStaticVariable("amount", economyProvider.format(amount))
-      .withStaticVariable("target_world_group", targetWorldGroup.displayName().asScalar(ScalarType.STRING, config.rootSection.builtBaseEnvironment))
-      .withStaticVariable("source_world_group", sourceWorldGroup.displayName().asScalar(ScalarType.STRING, config.rootSection.builtBaseEnvironment))
+      .withStaticVariable("target_world_group", targetWorldGroup.evaluatedDisplayName())
+      .withStaticVariable("source_world_group", sourceWorldGroup.evaluatedDisplayName())
       .withStaticVariable("sender_name", player.getName())
       .withStaticVariable("receiver_name", targetPlayer.getName())
       .build();

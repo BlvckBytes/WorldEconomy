@@ -1,6 +1,5 @@
 package me.blvckbytes.world_economy.commands;
 
-import me.blvckbytes.bbconfigmapper.ScalarType;
 import me.blvckbytes.bukkitevaluable.BukkitEvaluable;
 import me.blvckbytes.bukkitevaluable.ConfigKeeper;
 import me.blvckbytes.world_economy.*;
@@ -135,16 +134,14 @@ public class MoneyCommand extends EconomyCommandBase implements CommandExecutor,
     if (sender instanceof Player player)
       executorName = player.getName();
     else {
-      if ((message = config.rootSection.playerMessages.moneyCommandConsoleName) != null)
-        executorName = message.asScalar(ScalarType.STRING, config.rootSection.builtBaseEnvironment);
-      else
+      if ((executorName = config.rootSection.playerMessages.evaluatedMoneyCommandConsoleName) == null)
         executorName = "Console";
     }
 
     var actionEnvironmentBase = config.rootSection.getBaseEnvironment()
       .withStaticVariable("target_old_balance", economyProvider.format(targetAccount.getBalance()))
       .withStaticVariable("amount", economyProvider.format(amount))
-      .withStaticVariable("world_group", targetWorldGroup.displayName().asScalar(ScalarType.STRING, config.rootSection.builtBaseEnvironment))
+      .withStaticVariable("world_group", targetWorldGroup.evaluatedDisplayName())
       .withStaticVariable("target_name", targetPlayer.getName())
       .withStaticVariable("executor_name", executorName)
       .withStaticVariable("executor_name", executorName)
