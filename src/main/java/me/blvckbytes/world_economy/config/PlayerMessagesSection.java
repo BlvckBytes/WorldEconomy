@@ -65,7 +65,6 @@ public class PlayerMessagesSection extends AConfigSection {
   public @Nullable BukkitEvaluable missingPermissionMoneyCommand;
   public @Nullable BukkitEvaluable unknownMoneyCommandAction;
   public @Nullable BukkitEvaluable usageMoneyCommand;
-  public @Nullable BukkitEvaluable playerOnlyMoneyCommandNoWorldGroup;
   public @Nullable BukkitEvaluable moneyCommandConsoleName;
   public @Nullable String evaluatedMoneyCommandConsoleName;
   public @Nullable BukkitEvaluable moneyAddExceedsReceiversBalance;

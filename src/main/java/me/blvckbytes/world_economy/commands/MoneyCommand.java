@@ -71,18 +71,11 @@ public class MoneyCommand extends EconomyCommandBase implements CommandExecutor,
         return true;
 
       if (args.length == 3) {
-        if (!(sender instanceof Player player)) {
-          if ((message = config.rootSection.playerMessages.playerOnlyMoneyCommandNoWorldGroup) != null)
-            message.sendMessage(sender, config.rootSection.builtBaseEnvironment);
-
-          return false;
-        }
-
-        var targetLastLocation = offlinePlayerHelper.getLastLocation(player);
+        var targetLastLocation = offlinePlayerHelper.getLastLocation(targetPlayer);
         targetWorldGroup = targetLastLocation.worldGroup();
 
         if (targetWorldGroup == null) {
-          sendUnknownWorldGroupMessage(targetLastLocation, player, sender);
+          sendUnknownWorldGroupMessage(targetLastLocation, targetPlayer, sender);
           return true;
         }
       }

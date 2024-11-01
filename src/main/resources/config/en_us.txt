@@ -126,7 +126,6 @@ MESSAGE-UNKNOWN-MONEY-COMMAND-ACTION   {prefix}&cThe action &4{input} &cis not o
 # - action_name_list: String
 # - world_group_list: String
 MESSAGE-USAGE-MONEY-COMMAND                      {prefix}&cUsage: /{label} <{action_name_list}&c> <player> <value> [{world_group_list}&c]
-MESSAGE-PLAYER-ONLY-MONEY-COMMAND-NO-WORLD-GROUP {prefix}&cOnly players can use the money-command without specifying a world-group.
 MESSAGE-MONEY-COMMAND-CONSOLE-NAME               &5Console
 # - target_old_balance: String
 # - amount: String

@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
@@ -72,29 +73,31 @@ public class OfflinePlayerHelper implements Listener {
   }
 
   public LastLocation getLastLocation(OfflinePlayer player) {
-    var playerId = player.getUniqueId();
+    synchronized (lastLocationByUuidCache) {
+      var playerId = player.getUniqueId();
 
-    if (player instanceof Player onlinePlayer) {
-      lastLocationByUuidCache.remove(playerId);
-      var worldName = onlinePlayer.getWorld().getName();
-      return new LastLocation(worldName, worldGroupRegistry.getWorldGroupByMemberNameIgnoreCase(worldName));
-    }
+      if (player instanceof Player onlinePlayer) {
+        lastLocationByUuidCache.remove(playerId);
+        var worldName = onlinePlayer.getWorld().getName();
+        return new LastLocation(worldName, worldGroupRegistry.getWorldGroupByMemberNameIgnoreCase(worldName));
+      }
 
-    LastLocation result;
+      LastLocation result;
 
-    if ((result = lastLocationByUuidCache.get(playerId)) != null)
+      if ((result = lastLocationByUuidCache.get(playerId)) != null)
+        return result;
+
+      var worldName = getWorldNameLowerFromPlayerDataFile(playerId);
+
+      if (worldName == null)
+        return NULL_LOCATION;
+
+      var worldGroup = worldGroupRegistry.getWorldGroupByMemberNameIgnoreCase(worldName);
+
+      result = new LastLocation(worldName, worldGroup);
+      lastLocationByUuidCache.put(playerId, result);
       return result;
-
-    var worldName = getWorldNameLowerFromPlayerDataFile(playerId);
-
-    if (worldName == null)
-      return NULL_LOCATION;
-
-    var worldGroup = worldGroupRegistry.getWorldGroupByMemberNameIgnoreCase(worldName);
-
-    result = new LastLocation(worldName, worldGroup);
-    lastLocationByUuidCache.put(playerId, result);
-    return result;
+    }
   }
 
   private @Nullable String getWorldNameLowerFromPlayerDataFile(UUID uuid) {
@@ -175,5 +178,13 @@ public class OfflinePlayerHelper implements Listener {
 
     if (cacheNameEntry != null)
       offlinePlayerByLowerName.remove(cacheNameEntry);
+  }
+
+  @EventHandler
+  public void onQuit(PlayerQuitEvent event) {
+    synchronized (lastLocationByUuidCache) {
+      var player = event.getPlayer();
+      lastLocationByUuidCache.remove(player.getUniqueId());
+    }
   }
 }

@@ -43,18 +43,6 @@ commands:
       - bals
 
 worldGroups:
-  # Used to internally identify balances, as well as for tab-completion
-  # Do not alter once initially established!
-  World:
-    # Rendered in chat, whenever this world-group is referred to
-    displayName: '&6World'
-    # Balance set to an account whenever it's first created
-    startingBalance: 200.0
-    # List of world-names which are combined into a single economy-account per player
-    members:
-      - world
-      - world_nether
-      - world_the_end
 
 economy:
   # Whether to log all calls made to the economy-provider for debugging-purposes
@@ -229,7 +217,6 @@ playerMessages:
     action_name_list = iter_cat(actions, (action_name) => @{MESSAGE-USAGE-MONEY-ACTION-ITEM}, @{MESSAGE-USAGE-MONEY-ACTION-SEPARATOR})
     world_group_list = iter_cat(group_names, (group_name) => @{MESSAGE-USAGE-WORLD-GROUP-LIST-ITEM}, @{MESSAGE-USAGE-WORLD-GROUP-LIST-SEPARATOR}, @{MESSAGE-NO-WORLD-GROUPS(prefix=lut["MESSAGE_PREFIX"])})
     @{MESSAGE-USAGE-MONEY-COMMAND(prefix=lut["MESSAGE_PREFIX"])}
-  playerOnlyMoneyCommandNoWorldGroup$: '@{MESSAGE-PLAYER-ONLY-MONEY-COMMAND-NO-WORLD-GROUP(prefix=lut["MESSAGE_PREFIX"])}'
   moneyCommandConsoleName$: '@{MESSAGE-MONEY-COMMAND-CONSOLE-NAME}'
   # target_old_balance: String
   # amount: String
