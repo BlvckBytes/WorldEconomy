@@ -86,17 +86,43 @@ public class EconomyAccountRegistry {
 
   private void updateTopListPosition(EconomyAccount account) {
     synchronized (topList) {
-      var existingIndex = Collections.binarySearch(topList, account, Comparator.comparing(EconomyAccount::getPreviousBalance));
+      var existingIndex = Collections.binarySearch(topList, account, makeTopListComparator(account));
 
       if (existingIndex >= 0)
         topList.remove(existingIndex);
 
-      var newIndex = Collections.binarySearch(topList, account, Comparator.comparing(EconomyAccount::getBalance));
+      var newIndex = Collections.binarySearch(topList, account, makeTopListComparator(null));
 
       if (newIndex < 0)
         newIndex = -newIndex - 1;
 
       topList.add(newIndex, account);
     }
+  }
+
+  private Comparator<EconomyAccount> makeTopListComparator(@Nullable EconomyAccount previousBalanceAccount) {
+    // For binarySearch(list, key, comparator), key is always b in compare(a, b)
+    return (a, b) -> {
+      double aKey;
+
+      if (a == previousBalanceAccount)
+        aKey = a.getPreviousBalance();
+      else
+        aKey = a.getBalance();
+
+      double bKey;
+
+      if (previousBalanceAccount != null)
+        bKey = b.getPreviousBalance();
+      else
+        bKey = b.getBalance();
+
+      int balanceCompareResult;
+
+      if ((balanceCompareResult = Double.compare(aKey, bKey)) != 0)
+        return balanceCompareResult;
+
+      return -(a.holder.getName().compareTo(b.holder.getName()));
+    };
   }
 }
