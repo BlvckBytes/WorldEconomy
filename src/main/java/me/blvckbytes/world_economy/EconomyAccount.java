@@ -3,8 +3,11 @@ package me.blvckbytes.world_economy;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 public class EconomyAccount {
 
+  private double previousBalance;
   private double balance;
   private boolean dirty;
 
@@ -24,13 +27,25 @@ public class EconomyAccount {
     this.holder = holder;
     this.worldGroup = worldGroup;
     this.balance = balance;
+    this.previousBalance = balance;
     this.balanceConstraint = balanceConstraint;
   }
 
+  /**
+   * Get the current balance of this account
+   */
   public double getBalance() {
     synchronized (this) {
       return balance;
     }
+  }
+
+  /**
+   * Get the balance prior to the last transaction; returns the same as {@link #getBalance()}
+   * if no transactions have yet taken place on this account.
+   */
+  public double getPreviousBalance() {
+    return previousBalance;
   }
 
   public boolean hasBalance(double value) {
@@ -44,6 +59,7 @@ public class EconomyAccount {
       if (!balanceConstraint.isWithinRange(this, balance - value))
         return false;
 
+      this.previousBalance = balance;
       balance -= value;
       markDirty();
       return true;
@@ -55,6 +71,7 @@ public class EconomyAccount {
       if (!balanceConstraint.isWithinRange(this, balance + value))
         return false;
 
+      this.previousBalance = balance;
       balance += value;
       markDirty();
       return true;
@@ -66,6 +83,7 @@ public class EconomyAccount {
       if (!balanceConstraint.isWithinRange(this, value))
         return false;
 
+      this.previousBalance = balance;
       balance = value;
       markDirty();
       return true;
@@ -89,5 +107,17 @@ public class EconomyAccount {
 
     if (this.afterBalanceUpdate != null)
       this.afterBalanceUpdate.run();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof EconomyAccount that)) return false;
+    return Objects.equals(holder.getUniqueId(), that.holder.getUniqueId()) && Objects.equals(worldGroup, that.worldGroup);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(holder.getUniqueId(), worldGroup);
   }
 }

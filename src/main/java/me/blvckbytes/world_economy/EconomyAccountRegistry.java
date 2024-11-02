@@ -10,7 +10,6 @@ public class EconomyAccountRegistry {
   private final WorldGroup worldGroup;
   private final Map<UUID, EconomyAccount> accountById;
 
-  private final Map<UUID, Integer> topListIndexById;
   private final List<EconomyAccount> topList;
 
   private final BalanceConstraint balanceConstraint;
@@ -22,23 +21,38 @@ public class EconomyAccountRegistry {
     this.worldGroup = worldGroup;
 
     this.accountById = new HashMap<>();
-    this.topListIndexById = new HashMap<>();
     this.topList = new ArrayList<>();
 
     this.balanceConstraint = balanceConstraint;
   }
 
-  public Collection<EconomyAccount> getTopAccounts(int limit) {
-    var result = new ArrayList<EconomyAccount>();
+  public @Nullable EconomyAccount getTopAccount(int place) {
+    synchronized (topList) {
+      if (place <= 0)
+        return null;
 
-    for (var i = topList.size() - 1; i >= 0; --i) {
-      result.add(topList.get(i));
+      int topListSize = topList.size();
 
-      if (result.size() == limit)
-        break;
+      if (place > topListSize)
+        return null;
+
+      return topList.get(topListSize - place);
     }
+  }
 
-    return result;
+  public Collection<EconomyAccount> getTopAccounts(int limit) {
+    synchronized (topList) {
+      var result = new ArrayList<EconomyAccount>();
+
+      for (var i = topList.size() - 1; i >= 0; --i) {
+        result.add(topList.get(i));
+
+        if (result.size() == limit)
+          break;
+      }
+
+      return result;
+    }
   }
 
   public Collection<EconomyAccount> getAccounts() {
@@ -72,11 +86,10 @@ public class EconomyAccountRegistry {
 
   private void updateTopListPosition(EconomyAccount account) {
     synchronized (topList) {
-      var playerId = account.holder.getUniqueId();
-      var existingIndex = topListIndexById.remove(playerId);
+      var existingIndex = Collections.binarySearch(topList, account, Comparator.comparing(EconomyAccount::getPreviousBalance));
 
-      if (existingIndex != null)
-        topList.remove((int) existingIndex);
+      if (existingIndex >= 0)
+        topList.remove(existingIndex);
 
       var newIndex = Collections.binarySearch(topList, account, Comparator.comparing(EconomyAccount::getBalance));
 
@@ -84,7 +97,6 @@ public class EconomyAccountRegistry {
         newIndex = -newIndex - 1;
 
       topList.add(newIndex, account);
-      topListIndexById.put(playerId, newIndex);
     }
   }
 }
