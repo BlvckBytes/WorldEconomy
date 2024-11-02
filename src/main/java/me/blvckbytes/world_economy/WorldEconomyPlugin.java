@@ -69,6 +69,11 @@ public class WorldEconomyPlugin extends JavaPlugin {
         new Tuple<>(config.rootSection.commands.payGroup, payCommand),
         new Tuple<>(config.rootSection.commands.reload, new ReloadCommand(config, logger))
       ));
+
+      if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
+        new WorldEconomyPlaceholderExpansion(this, economyDataRegistry, worldGroupRegistry, economyProvider).register();
+        logger.info("Registered PlaceholderAPI-expansion for top-list access");
+      }
     } catch (Exception e) {
       logger.log(Level.SEVERE, "Could not initialize plugin", e);
       Bukkit.getPluginManager().disablePlugin(this);

@@ -5,6 +5,7 @@ version: ${project.version}
 author: BlvckBytes
 api-version: 1.13
 depend: [Vault, NBTAPI]
+softdepend: [PlaceholderAPI]
 commands:
   balance:
     description: 'Retrieve the current balances of yourself and others'
