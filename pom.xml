@@ -124,14 +124,14 @@
                         <!-- Relocate all libs into the root package -->
                         <relocation>
                             <pattern>me/blvckbytes/(bbconfigmapper|bukkitevaluable|gpeee)/(.*)</pattern>
-                            <shadedPattern>me/blvckbytes/quick_shop_search/$1/$2</shadedPattern>
+                            <shadedPattern>me/blvckbytes/world_economy/$1/$2</shadedPattern>
                             <rawString>true</rawString>
                         </relocation>
 
                         <!-- See [1] -->
                         <relocation>
                             <pattern>org/yaml/snakeyaml/(.*)</pattern>
-                            <shadedPattern>me/blvckbytes/quick_shop_search/org/yaml/snakeyaml/$1</shadedPattern>
+                            <shadedPattern>me/blvckbytes/world_economy/org/yaml/snakeyaml/$1</shadedPattern>
                             <rawString>true</rawString>
                         </relocation>
                     </relocations>
