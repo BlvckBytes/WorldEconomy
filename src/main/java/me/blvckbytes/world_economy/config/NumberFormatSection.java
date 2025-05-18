@@ -21,12 +21,12 @@ public class NumberFormatSection extends AConfigSection {
   private int numberOfDecimalDigits;
 
   // https://en.wikipedia.org/wiki/IETF_language_tag#List_of_common_primary_language_subtags
-  private @Nullable String subtagName;
+  public @Nullable String subtagName;
   // https://docs.oracle.com/javase/8/docs/api/index.html?java/math/RoundingMode.html
-  private @Nullable RoundingMode roundingMode;
-  private boolean useGrouping;
-  private int minimumFractionDigits;
-  private int maximumFractionDigits;
+  public @Nullable RoundingMode roundingMode;
+  public boolean useGrouping;
+  public int minimumFractionDigits;
+  public int maximumFractionDigits;
 
   public NumberFormatSection(EvaluationEnvironmentBuilder baseEnvironment) {
     super(baseEnvironment);
